@@ -4,7 +4,7 @@ import semver from 'semver'
 /**
  * @public
  */
-export async function gitCommitToChangeLog(): Promise<string> {
+export async function gitCommitToChangeLog(release?: string): Promise<string> {
   const remoteUrl = childProcess.execSync(`git config --get remote.origin.url`).toString().trim()
   const remoteType = remoteUrl.includes('github') ? 'github' : 'gitlab'
   const parts = remoteUrl.substring(0, remoteUrl.length - '.git'.length).split(/\/|:|@/)
@@ -15,22 +15,27 @@ export async function gitCommitToChangeLog(): Promise<string> {
   const lines = childProcess.execSync(`git log --all`).toString().split('\n\n')
   const versions: Version[] = []
   let current: Version | undefined
+  if (release) {
+    current = {
+      version: release,
+      date: new Date().toISOString(),
+      commits: [],
+    }
+    versions.push(current)
+  }
   for (let i = 0; i < lines.length; i += 2) {
     const headers = lines[i].split('\n')
-    const hash = headers[0].substring('commit'.length).trim()
-    const author = headers[1].substring('Author:'.length).trim()
-    const date = headers[2].substring('Date:'.length).trim()
     const message = lines[i + 1].trim().split('\n')[0]
     if (semver.valid(message)) {
+      const date = headers[2].substring('Date:'.length).trim()
       current = {
         version: message.startsWith('v') ? message.substring(1) : message,
-        hash,
-        author,
         date,
         commits: [],
       }
       versions.push(current)
     } else if (current) {
+      const hash = headers[0].substring('commit'.length).trim()
       const commit = current.commits.find((c) => c.message === message)
       if (commit) {
         commit.hashes.push(hash)
@@ -73,7 +78,8 @@ ${commits.join('\n')}`
   })
 
   return `# Change Log
-${result.join('\n')}`
+${result.join('\n')}
+`
 }
 
 function formatMonthAndDay(value: number) {
@@ -92,8 +98,6 @@ interface Commit {
 
 interface Version {
   version: string
-  hash: string
-  author: string
   date: string
   commits: Commit[]
 }

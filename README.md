@@ -25,6 +25,7 @@ key | description
 --- | ---
 -h,--help | Print this message.
 -v,--version | Print the version
+--release | release version, eg `--release 1.0.0`
 
 ## API
 

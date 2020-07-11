@@ -13,6 +13,8 @@ export default {
   postScript: ({ dir, tag, version }) => [
     tag ? `npm publish "${dir}" --access public --tag ${tag}` : `npm publish "${dir}" --access public`,
     'git add package.json',
+    `node dist/index.js --release ${version}`,
+    'git add CHANGELOG.md',
     `git commit -m "${version}"`,
     `git tag -a v${version} -m 'v${version}'`,
     'git push',

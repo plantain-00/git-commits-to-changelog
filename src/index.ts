@@ -13,7 +13,9 @@ function showHelp() {
   console.log(`Version ${packageJson.version}
 Syntax:   git-commits-to-changelog [options]
 Examples: git-commits-to-changelog
+          git-commits-to-changelog --release 1.0.0
 Options:
+ --release                                          Release version
  -h, --help                                         Print this message.
  -v, --version                                      Print the version
 `)
@@ -26,6 +28,7 @@ async function executeCommandLine() {
     suppressError?: unknown
     h?: unknown
     help?: unknown
+    release?: string
   }
 
   const showVersion = argv.v || argv.version
@@ -41,7 +44,7 @@ async function executeCommandLine() {
 
   suppressError = !!argv.suppressError
 
-  const changelog = await gitCommitToChangeLog()
+  const changelog = await gitCommitToChangeLog(argv.release)
   fs.writeFileSync('CHANGELOG.md', changelog)
 }
 
