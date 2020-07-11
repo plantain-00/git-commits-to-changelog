@@ -1,5 +1,3 @@
-import { checkGitStatus } from 'clean-scripts'
-
 const tsFiles = `"src/**/*.ts"`
 
 export default {
@@ -16,7 +14,6 @@ export default {
   },
   test: [
     'clean-release --config clean-run.config.ts',
-    () => checkGitStatus()
   ],
   fix: `eslint --ext .js,.ts ${tsFiles} --fix`
 }
