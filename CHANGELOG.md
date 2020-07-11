@@ -1,5 +1,10 @@
 # Change Log
 
+## [1.1.0](https://github.com/plantain-00/git-commits-to-changelog/compare/v1.0.0...v1.1.0) (2020-07-11)
+  
+* feat: support --release ([aad525a](https://github.com/plantain-00/git-commits-to-changelog/commit/aad525af3ee441a1819be45c17cd139163585564))
+* chore: add own changelog ([65583f9](https://github.com/plantain-00/git-commits-to-changelog/commit/65583f94f85ccd3f51b5a509a5d3305239a5ff66))
+
 ## 1.0.0 (2020-07-11)
   
 * feat: add initial feature ([7004876](https://github.com/plantain-00/git-commits-to-changelog/commit/7004876f6bb48e2c5bdda1c8add80ae5706918b7))
