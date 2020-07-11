@@ -1,6 +1,6 @@
 {
   "name": "git-commits-to-changelog",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A CLI to generate changelog from git commits.",
   "main": "dist/index.js",
   "scripts": {
