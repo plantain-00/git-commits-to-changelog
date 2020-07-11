@@ -25,3 +25,11 @@ key | description
 --- | ---
 -h,--help | Print this message.
 -v,--version | Print the version
+
+## API
+
+```ts
+import { gitCommitToChangeLog } from 'git-commits-to-changelog'
+
+const changelog = await gitCommitToChangeLog()
+```

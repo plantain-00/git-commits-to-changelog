@@ -1,5 +1,7 @@
 import minimist from 'minimist'
+import * as fs from 'fs'
 import * as packageJson from '../package.json'
+import { gitCommitToChangeLog } from './core'
 
 let suppressError = false
 
@@ -39,7 +41,8 @@ async function executeCommandLine() {
 
   suppressError = !!argv.suppressError
 
-  // todo
+  const changelog = await gitCommitToChangeLog()
+  fs.writeFileSync('CHANGELOG.md', changelog)
 }
 
 executeCommandLine().then(() => {
