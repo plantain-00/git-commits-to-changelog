@@ -1,5 +1,9 @@
 # Change Log
 
+## [1.2.1](https://github.com/plantain-00/git-commits-to-changelog/compare/v1.2.0...v1.2.1) (2020-07-18)
+  
+* fix: main and types path ([e5ae08c](https://github.com/plantain-00/git-commits-to-changelog/commit/e5ae08c630e755f4ffcd52349a27c75b01be116b))
+
 ## [1.2.0](https://github.com/plantain-00/git-commits-to-changelog/compare/v1.1.0...v1.2.0) (2020-07-18)
   
 * feat: expose iterateCommits ([a77b8bb](https://github.com/plantain-00/git-commits-to-changelog/commit/a77b8bb2df4f64920419dec94c3e4faeeb6bcdc4))
