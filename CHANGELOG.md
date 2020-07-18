@@ -1,5 +1,10 @@
 # Change Log
 
+## [1.2.0](https://github.com/plantain-00/git-commits-to-changelog/compare/v1.1.0...v1.2.0) (2020-07-18)
+  
+* feat: expose iterateCommits ([a77b8bb](https://github.com/plantain-00/git-commits-to-changelog/commit/a77b8bb2df4f64920419dec94c3e4faeeb6bcdc4))
+* chore: update dependencies ([9f39025](https://github.com/plantain-00/git-commits-to-changelog/commit/9f39025330314911aadd27c096233b722aaf409e))
+
 ## [1.1.0](https://github.com/plantain-00/git-commits-to-changelog/compare/v1.0.0...v1.1.0) (2020-07-11)
   
 * feat: support --release ([aad525a](https://github.com/plantain-00/git-commits-to-changelog/commit/aad525af3ee441a1819be45c17cd139163585564))
