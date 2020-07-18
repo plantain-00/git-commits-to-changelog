@@ -12,7 +12,6 @@ export async function gitCommitToChangeLog(release?: string): Promise<string> {
   const username = parts[parts.length - 2]
   const repositoryName = parts[parts.length - 1]
 
-  const lines = childProcess.execSync(`git log --all`).toString().split('\n\n')
   const versions: Version[] = []
   let current: Version | undefined
   if (release) {
@@ -23,26 +22,22 @@ export async function gitCommitToChangeLog(release?: string): Promise<string> {
     }
     versions.push(current)
   }
-  for (let i = 0; i < lines.length; i += 2) {
-    const headers = lines[i].split('\n')
-    const message = lines[i + 1].trim().split('\n')[0]
-    if (semver.valid(message)) {
-      const date = headers[2].substring('Date:'.length).trim()
+  for (const commit of iterateCommits()) {
+    if (commit.kind === 'version') {
       current = {
-        version: message.startsWith('v') ? message.substring(1) : message,
-        date,
+        version: commit.version,
+        date: commit.date,
         commits: [],
       }
       versions.push(current)
     } else if (current) {
-      const hash = headers[0].substring('commit'.length).trim()
-      const commit = current.commits.find((c) => c.message === message)
-      if (commit) {
-        commit.hashes.push(hash)
+      const currentCommit = current.commits.find((c) => c.message === commit.message)
+      if (currentCommit) {
+        currentCommit.hashes.push(commit.hash)
       } else {
         current.commits.push({
-          hashes: [hash],
-          message
+          hashes: [commit.hash],
+          message: commit.message,
         })
       }
     }
@@ -80,6 +75,34 @@ ${commits.join('\n')}`
   return `# Change Log
 ${result.join('\n')}
 `
+}
+
+/**
+ * @public
+ */
+export function* iterateCommits() {
+  const lines = childProcess.execSync(`git log --all`).toString().split('\n\n')
+  for (let i = 0; i < lines.length; i += 2) {
+    const headers = lines[i].split('\n')
+    const message = lines[i + 1].trim().split('\n')[0]
+    const hash = headers[0].substring('commit'.length).trim()
+    const date = headers[2].substring('Date:'.length).trim()
+    if (semver.valid(message)) {
+      yield {
+        kind: 'version' as const,
+        version: message.startsWith('v') ? message.substring(1) : message,
+        date,
+        hash,
+      }
+    } else {
+      yield {
+        kind: 'message' as const,
+        date,
+        hash,
+        message,
+      }
+    }
+  }
 }
 
 function formatMonthAndDay(value: number) {
