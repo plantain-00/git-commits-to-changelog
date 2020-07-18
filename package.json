@@ -2,7 +2,7 @@
   "name": "git-commits-to-changelog",
   "version": "1.2.0",
   "description": "A CLI to generate changelog from git commits.",
-  "main": "dist/index.js",
+  "main": "dist/core.js",
   "scripts": {
     "build": "clean-scripts build",
     "lint": "clean-scripts lint",
@@ -46,7 +46,7 @@
   "bin": {
     "git-commits-to-changelog": "bin/git-commits-to-changelog"
   },
-  "types": "dist/index.d.ts",
+  "types": "dist/core.d.ts",
   "typeCoverage": {
     "atLeast": 99.64
   }
