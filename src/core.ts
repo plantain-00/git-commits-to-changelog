@@ -81,6 +81,7 @@ ${result.join('\n')}
  * @public
  */
 export function* iterateCommits() {
+  childProcess.execSync(`git remote prune origin`)
   const lines = childProcess.execSync(`git log --all`).toString().split('\n\n')
   for (let i = 0; i < lines.length; i += 2) {
     const headers = lines[i].split('\n')
