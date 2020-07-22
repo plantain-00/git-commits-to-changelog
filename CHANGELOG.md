@@ -1,5 +1,10 @@
 # Change Log
 
+## [1.2.2](https://github.com/plantain-00/git-commits-to-changelog/compare/v1.2.1...v1.2.2) (2020-07-22)
+  
+* fix: prune remote before git log ([52d88ef](https://github.com/plantain-00/git-commits-to-changelog/commit/52d88efa57d951e33214ef8efbb9d3cd7f67a2eb))
+* chore: add changelog ([570906b](https://github.com/plantain-00/git-commits-to-changelog/commit/570906b9ecc2ad4537ff9bbc1265b9c902873397))
+
 ## [1.2.1](https://github.com/plantain-00/git-commits-to-changelog/compare/v1.2.0...v1.2.1) (2020-07-18)
   
 * fix: main and types path ([e5ae08c](https://github.com/plantain-00/git-commits-to-changelog/commit/e5ae08c630e755f4ffcd52349a27c75b01be116b))
