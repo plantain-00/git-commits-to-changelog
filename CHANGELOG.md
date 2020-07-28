@@ -1,5 +1,10 @@
 # Change Log
 
+## [1.3.0](https://github.com/plantain-00/git-commits-to-changelog/compare/v1.2.2...v1.3.0) (2020-07-28)
+  
+* feat: reduce prerelease head size, fix wrong git message ([27da436](https://github.com/plantain-00/git-commits-to-changelog/commit/27da436415d8f053f1ad61528f5c8ba45d571eaa))
+* chore: update dependencies ([1dfe45a](https://github.com/plantain-00/git-commits-to-changelog/commit/1dfe45a6620433c9db2b6e6de7d527043aca6d86))
+
 ## [1.2.2](https://github.com/plantain-00/git-commits-to-changelog/compare/v1.2.1...v1.2.2) (2020-07-22)
   
 * fix: prune remote before git log ([52d88ef](https://github.com/plantain-00/git-commits-to-changelog/commit/52d88efa57d951e33214ef8efbb9d3cd7f67a2eb))
