@@ -19,6 +19,7 @@ export async function gitCommitToChangeLog(release?: string): Promise<string> {
       version: release,
       date: new Date().toISOString(),
       commits: [],
+      prerelease: !!semver.prerelease(release),
     }
     versions.push(current)
   }
@@ -28,6 +29,7 @@ export async function gitCommitToChangeLog(release?: string): Promise<string> {
         version: commit.version,
         date: commit.date,
         commits: [],
+        prerelease: commit.prerelease,
       }
       versions.push(current)
     } else if (current) {
@@ -46,12 +48,13 @@ export async function gitCommitToChangeLog(release?: string): Promise<string> {
   const result = versions.map((r, i) => {
     const date = formatDate(r.date)
     let title: string
+    const head = r.prerelease ? '###' : '##'
     if (i === versions.length - 1) {
-      title = `## ${r.version} (${date})`
+      title = `${head} ${r.version} (${date})`
     } else if (remoteType === 'github') {
-      title = `## [${r.version}](https://${hostname}/${username}/${repositoryName}/compare/v${versions[i + 1].version}...v${r.version}) (${date})`
+      title = `${head} [${r.version}](https://${hostname}/${username}/${repositoryName}/compare/v${versions[i + 1].version}...v${r.version}) (${date})`
     } else {
-      title = `## [${r.version}](https://${hostname}/${username}/${repositoryName}/-/compare/v${versions[i + 1].version}...v${r.version}) (${date})`
+      title = `${head} [${r.version}](https://${hostname}/${username}/${repositoryName}/-/compare/v${versions[i + 1].version}...v${r.version}) (${date})`
     }
     const commits = r.commits.map((c) => {
       let hashes: string[]
@@ -81,8 +84,7 @@ ${result.join('\n')}
  * @public
  */
 export function* iterateCommits() {
-  childProcess.execSync(`git remote prune origin`)
-  const lines = childProcess.execSync(`git log --all`).toString().split('\n\n')
+  const lines = childProcess.execSync('git log').toString().split('\n\n')
   for (let i = 0; i < lines.length; i += 2) {
     const headers = lines[i].split('\n')
     const message = lines[i + 1].trim().split('\n')[0]
@@ -94,6 +96,7 @@ export function* iterateCommits() {
         version: message.startsWith('v') ? message.substring(1) : message,
         date,
         hash,
+        prerelease: !!semver.prerelease(message),
       }
     } else {
       yield {
@@ -124,4 +127,5 @@ interface Version {
   version: string
   date: string
   commits: Commit[]
+  prerelease: boolean
 }
