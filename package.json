@@ -50,5 +50,8 @@
   "types": "dist/core.d.ts",
   "typeCoverage": {
     "atLeast": 99.64
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
   }
 }
