@@ -14,8 +14,10 @@ function showHelp() {
 Syntax:   git-commits-to-changelog [options]
 Examples: git-commits-to-changelog
           git-commits-to-changelog --release 1.0.0
+          git-commits-to-changelog --append
 Options:
  --release                                          Release version
+ --append                                           Append changelog to old changelog rather than generate it from whole git commits
  -h, --help                                         Print this message.
  -v, --version                                      Print the version
 `)
@@ -29,6 +31,7 @@ async function executeCommandLine() {
     h?: unknown
     help?: unknown
     release?: string
+    append?: boolean
   }
 
   const showVersion = argv.v || argv.version
@@ -44,7 +47,7 @@ async function executeCommandLine() {
 
   suppressError = !!argv.suppressError
 
-  const changelog = await gitCommitToChangeLog(argv.release)
+  const changelog = await gitCommitToChangeLog(argv.release, argv.append)
   fs.writeFileSync('CHANGELOG.md', changelog)
 }
 

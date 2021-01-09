@@ -1,16 +1,34 @@
 import childProcess from 'child_process'
 import semver from 'semver'
+import * as fs from 'fs'
 
 /**
  * @public
  */
-export async function gitCommitToChangeLog(release?: string): Promise<string> {
+export async function gitCommitToChangeLog(release?: string, append?: boolean): Promise<string> {
   const remoteUrl = childProcess.execSync(`git config --get remote.origin.url`).toString().trim()
   const remoteType = remoteUrl.includes('github') ? 'github' : 'gitlab'
   const parts = remoteUrl.substring(0, remoteUrl.length - '.git'.length).split(/\/|:|@/)
   const hostname = parts[parts.length - 3]
   const username = parts[parts.length - 2]
   const repositoryName = parts[parts.length - 1]
+
+  let last: { version: string, changelog: string } | undefined
+  if (append) {
+    const oldChangelog = await readFileAsync('CHANGELOG.md')
+    if (oldChangelog) {
+      const oldVersions = oldChangelog.split('\n\n')
+      if (oldVersions.length > 1) {
+        const versionString = oldVersions[1]
+        const startIndex = versionString.indexOf('[')
+        const endIndex = versionString.indexOf(']')
+        last = {
+          version: versionString.substring(startIndex + 1, endIndex),
+          changelog: oldVersions.slice(1).join('\n\n')
+        }
+      }
+    }
+  }
 
   const versions: Version[] = []
   let current: Version | undefined
@@ -25,6 +43,9 @@ export async function gitCommitToChangeLog(release?: string): Promise<string> {
   }
   for (const commit of iterateCommits()) {
     if (commit.kind === 'version') {
+      if (last && commit.version === last.version) {
+        break
+      }
       current = {
         version: commit.version,
         date: commit.date,
@@ -75,9 +96,11 @@ ${title}
 ${commits.join('\n')}`
   })
 
+  const lastChangelog = last ? last.changelog : ''
+
   return `# Change Log
 ${result.join('\n')}
-`
+${lastChangelog}`
 }
 
 /**
@@ -128,4 +151,16 @@ interface Version {
   date: string
   commits: Commit[]
   prerelease: boolean
+}
+
+function readFileAsync(path: string) {
+  return new Promise<string>((resolve) => {
+    fs.readFile(path, (err, buffer) => {
+      if (err) {
+        resolve('')
+      } else {
+        resolve(buffer.toString())
+      } 
+    })
+  })
 }

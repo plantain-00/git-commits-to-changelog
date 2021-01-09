@@ -26,6 +26,7 @@ key | description
 -h,--help | Print this message.
 -v,--version | Print the version
 --release | release version, eg `--release 1.0.0`
+--append | append changelog to old changelog rather than generate it from whole git commits
 
 ## API
 
