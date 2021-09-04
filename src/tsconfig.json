@@ -3,6 +3,7 @@
   "compilerOptions": {
     "outDir": "../dist",
     "declaration": true,
+    "noUncheckedIndexedAccess": false,
     "target": "es2018",
     "module": "commonjs"
   }
